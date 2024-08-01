@@ -1,0 +1,12 @@
+@model IEnumerable<CityWeather>
+@{
+    ViewBag.Title = "Weather";
+}
+
+<h1>Weather</h1>
+<div class="margin-top-200 inline-block flex margin-left">
+    @foreach (var city in Model)
+    {
+        <vc:city-weather model="city"></vc:city-weather>
+    }
+</div>

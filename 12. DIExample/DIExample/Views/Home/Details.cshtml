@@ -1,0 +1,18 @@
+﻿@model CityWeather
+@{
+    ViewBag.Title = $"{Model.CityName} City Weather";
+}
+
+<div class="margin-top-200 box" style="margin-left: 40%; margin-right: 40%">
+    <div class="flex-borderless">
+        <div class="text-left">
+            <h2>@Model.CityName</h2>
+            <span class="text-dark-grey">@Model.DateAndTime.ToString("dd MMM yyyy")</span><br>
+            <span class="text-dark-grey">@Model.DateAndTime.ToShortTimeString()</span><br>
+        </div>
+        <div class="text-left border-left">
+            <h1>@Model.TemperatureFahrenheit <span class="margin-bottom text-grey" style="font-size: xx-large;">°F</span> </h1>
+        </div>
+    </div>
+</div>
+<a href="/" class="text-center" style="margin-left: 45%;">Back to Weather App</a>
