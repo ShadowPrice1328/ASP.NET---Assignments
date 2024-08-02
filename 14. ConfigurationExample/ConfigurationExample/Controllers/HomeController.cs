@@ -11,9 +11,11 @@ public class HomeController(IConfiguration configuration) : Controller
     {
         IConfigurationSection section = _configuration.GetSection("API");
 
-        Tuple<string, string> tuple = 
+        Tuple<string?, string?> tuple = 
             new(section.GetValue("ClientID", "No ClientID!"), section.GetValue("ClientSecret", "No ClientSecret!"));
 
-        return View(tuple);
+        WeatherApiOptions? options = _configuration.GetSection("API").Get<WeatherApiOptions>();
+
+        return View(options);
     }
 }

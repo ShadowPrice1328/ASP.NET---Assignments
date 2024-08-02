@@ -1,4 +1,5 @@
-@model Tuple<string, string>
+@using ConfigurationExample
+@model WeatherApiOptions
 
 <!DOCTYPE html>
 <html>
@@ -8,8 +9,8 @@
     </head>
     <body>
         <ul>
-            <li>@Model.Item1</li>
-            <li>@Model.Item2</li>
+            <li>@Model.ClientID</li>
+            <li>@Model.ClientSecret</li>
         </ul>
     </body>
 </html>
