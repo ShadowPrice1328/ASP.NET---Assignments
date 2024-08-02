@@ -1,21 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace ConfigurationExample.Controllers;
 
-public class HomeController(IConfiguration configuration) : Controller
+public class HomeController(IOptions<WeatherApiOptions> options) : Controller
 {
-    private readonly IConfiguration _configuration = configuration;
+    private readonly WeatherApiOptions _options = options.Value;
 
     [Route("/")]
     public IActionResult Index()
     {
-        IConfigurationSection section = _configuration.GetSection("API");
+        Tuple<string, string> tuple = 
+            Tuple.Create<string, string>(_options.ClientID, _options.ClientSecret);
 
-        Tuple<string?, string?> tuple = 
-            new(section.GetValue("ClientID", "No ClientID!"), section.GetValue("ClientSecret", "No ClientSecret!"));
-
-        WeatherApiOptions? options = _configuration.GetSection("API").Get<WeatherApiOptions>();
-
-        return View(options);
+        return View(tuple);
     }
 }
