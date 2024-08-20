@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>@ViewBag.Title</title>
+        <meta charset="UTF-8"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </head>
+    <style>
+        ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        }
+
+        li {
+        display: inline;
+        }
+    </style>
+    <body>
+        <div>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/finance">Finance</a></li>
+                <li style="float: inline-end;"><i class="fa-solid fa-money-bill-trend-up"></i></li>
+            </ul>
+        </div>
+        @RenderBody()
+    </body>
+</html>

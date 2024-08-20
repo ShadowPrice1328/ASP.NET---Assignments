@@ -1,3 +1,7 @@
+@{
+    ViewBag.Title = "Home";
+}
+
 @using ConfigurationExample
 @model Tuple<string, string>
 
@@ -11,6 +15,7 @@
         <ul>
             <li>@Model.Item1</li>
             <li>@Model.Item2</li>
+            <li>@ViewBag.Env</li>
         </ul>
     </body>
 </html>

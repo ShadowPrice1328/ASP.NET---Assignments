@@ -1,0 +1,22 @@
+@{
+    ViewBag.Title = "Finance";
+}
+
+@model Stock
+
+<div style="display: flex; flex-direction: column; align-items: flex-start; padding: 10px; border: solid 2px black;">
+    @if (Model != null)
+    {
+        <h2>@Model.StockSymbol</h2>
+        <ul>
+            <li><strong>Current Price:</strong> $@(Model.CurrentPrice.ToString("N"))</li><br>
+            <li><strong>High Price:</strong> $@(Model.HighPrice.ToString("N"))</li><br>
+            <li><strong>Low Price:</strong> $@(Model.LowPrice.ToString("N"))</li><br>
+            <li><strong>Open Price:</strong> $@(Model.OpenPrice.ToString("N"))</li><br>
+        </ul>
+    }
+    else
+    {
+        <p>No data available.</p>
+    }
+</div>
