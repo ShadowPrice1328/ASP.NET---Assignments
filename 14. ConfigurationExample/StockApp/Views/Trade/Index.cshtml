@@ -1,0 +1,21 @@
+@{
+    ViewBag.Title = "Trade Info";
+}
+@model StockTrade
+
+<form method="post">
+    <div class="box trading-panel">
+        <div>
+            <b class="stock-title">@Model.StockName</b>
+            <b class="stock-title">(@Model.StockSymbol)</b>
+            <h2 class="stock-price"><small class="text-grey">$</small> <span class="price">@Model.Price.ToString("N")</span></h2>
+        </div>
+    </div>
+
+    <input type="hidden" name="StockSymbol" id="StockSymbol" value="@Model.StockSymbol" />
+    <input type="hidden" name="Token" id="Token" value="@ViewBag.Token" />
+</form>
+
+@section Scripts{
+    <script src="~/js/FinnhubScript.js"></script>
+}
