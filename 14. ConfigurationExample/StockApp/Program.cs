@@ -1,6 +1,6 @@
+using ServiceContracts;
+using Services;
 using StockApp;
-using StockApp.ServiceContracts;
-using StockApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
