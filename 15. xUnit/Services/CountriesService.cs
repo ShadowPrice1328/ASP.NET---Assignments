@@ -4,10 +4,10 @@ using ServiceContracts.DTO;
 
 namespace Services;
 
-public class CountryService : ICountryService
+public class CountriesService : ICountriesService
 {
     private readonly List<Country> _countries;
-    public CountryService()
+    public CountriesService()
     {
         _countries = new List<Country>();
     }
@@ -31,5 +31,23 @@ public class CountryService : ICountryService
         _countries.Add(country);
 
         return country.ToCountryResponse();
+    }
+
+    public List<CountryResponse> GetAllCountries()
+    {
+        return _countries.Select(country => country.ToCountryResponse()).ToList();
+    }
+
+    public CountryResponse? GetCountryByCountryId(Guid? guid)
+    {
+        if (guid == null)
+            return null;
+
+        Country? foundCountry = _countries.FirstOrDefault(c => c.CountryId == guid);
+
+        if (foundCountry == null)
+            return null;
+
+        return foundCountry.ToCountryResponse();
     }
 }
