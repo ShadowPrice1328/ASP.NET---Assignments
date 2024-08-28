@@ -18,5 +18,5 @@ public interface IPersonsService
     /// Returns all persons
     /// </summary>
     /// <returns></returns>
-    List<PersonResponse?> GetAllPersons();
+    List<PersonResponse> GetAllPersons();
 }

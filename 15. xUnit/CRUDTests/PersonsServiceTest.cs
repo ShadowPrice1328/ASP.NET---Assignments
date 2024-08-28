@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Entities;
 using ServiceContracts;
 using ServiceContracts.DTO;
@@ -61,15 +62,37 @@ public class PersonsServiceTest
 
         // Act
         PersonResponse person_response_from_add = _personsService.AddPerson(personAddRequest);
-        List<PersonResponse?> persons_list_from_get_method = _personsService.GetAllPersons();
+        List<PersonResponse> persons_list_from_get_method = _personsService.GetAllPersons();
 
         // Assert
         Assert.True(person_response_from_add.PersonId != Guid.Empty);
         Assert.Contains(person_response_from_add, persons_list_from_get_method);
     }
 
-    // ToDo: email validation
-    // ToDo: minimum year
+    [Fact]
+    public void AddPerson_InvalidEmail()
+    {
+        // Arrange
+        PersonAddRequest? personAddRequest = new()
+        {
+            PersonName = "Somebody Somewhere",
+            Email = "mailexample.com",
+            DateOfBirth = DateTime.Parse("2005-05-01"),
+            Gender = GenderOptions.Female,
+            Address = "Some street",
+            CountryId = Guid.NewGuid(),
+            ReceiveNewsLetters = false            
+        };
 
+        var exception = Assert.Throws<ArgumentException>(() =>
+        {
+            // Act
+            _personsService.AddPerson(personAddRequest);
+        });
+
+        // Assert
+        Assert.Contains("Invalid email format", exception.Message);
+    }
+    
     #endregion
 }
