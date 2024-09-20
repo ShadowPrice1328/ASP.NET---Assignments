@@ -43,11 +43,6 @@ public class CountriesService : ICountriesService
         if (guid == null)
             return null;
 
-        Country? foundCountry = _countries.FirstOrDefault(c => c.CountryId == guid);
-
-        if (foundCountry == null)
-            return null;
-
-        return foundCountry.ToCountryResponse();
+        return _countries.FirstOrDefault(c => c.CountryId == guid)?.ToCountryResponse() ?? null;;
     }
 }
