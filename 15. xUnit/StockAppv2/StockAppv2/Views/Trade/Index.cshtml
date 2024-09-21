@@ -1,2 +1,9 @@
-﻿@{
-}
+﻿@model StockTradeViewModel
+
+<div class="box trading-panel">
+    <div>
+        <b class="stock-title">@Model.StockName</b>
+        <b class="stock-title">(@Model.StockSymbol)</b>
+        <h2 class="stock-price"><small class="text-grey">$</small> <span class="price">@Model.Price.ToString("N")</span></h2>
+    </div>
+</div>
