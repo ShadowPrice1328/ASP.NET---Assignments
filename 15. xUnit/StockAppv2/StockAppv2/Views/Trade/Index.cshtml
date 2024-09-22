@@ -1,9 +1,18 @@
 ﻿@model StockTradeViewModel
 
-<div class="box trading-panel">
-    <div>
-        <b class="stock-title">@Model.StockName</b>
-        <b class="stock-title">(@Model.StockSymbol)</b>
-        <h2 class="stock-price"><small class="text-grey">$</small> <span class="price">@Model.Price.ToString("N")</span></h2>
+<form method="post">
+    <div class="box trading-panel">
+        <div>
+            <b class="stock-title">@Model.StockName</b>
+            <b class="stock-title">(@Model.StockSymbol)</b>
+            <h2 class="stock-price"><small class="text-grey">$</small> <span class="price">@Model.Price.ToString("N")</span></h2>
+        </div>
     </div>
-</div>
+
+    <input type="hidden" name="StockSymbol" id="StockSymbol" value=@Model.StockSymbol/>
+    <input type="hidden" name="Token" id="FinnhubToken" value=@ViewBag.Token/>
+</form>
+
+@section Script{
+    <script src="~/js/FinnhubScript.js"></script>
+}

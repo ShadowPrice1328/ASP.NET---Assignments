@@ -7,23 +7,23 @@ using System.Threading.Tasks;
 
 namespace ServiceContracts.CustomValidators
 {
-    public class MaximumDateValidatorAttribute : ValidationAttribute
+    public class MaximumDateValidatorAttribute(string maxDate) : ValidationAttribute
     {
-        private readonly DateTime _maximumDate;
-        public MaximumDateValidatorAttribute(string maxDate) 
-        {
-            _maximumDate = DateTime.Parse(maxDate);
-        }
+        private readonly DateTime _maximumDate = DateTime.Parse(maxDate);
+
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            ArgumentNullException.ThrowIfNull(value);
-
-            if ((DateTime)value > _maximumDate)
+            if (value != null)
             {
-                return new ValidationResult(ErrorMessage ?? $"Date should not be older than {_maximumDate}", [nameof(validationContext.MemberName)]);
+                if ((DateTime)value < _maximumDate)
+                {
+                    return new ValidationResult(ErrorMessage ?? $"Date should not be older than {_maximumDate}", [nameof(validationContext.MemberName)]);
+                }
+                return ValidationResult.Success;
             }
+            else ArgumentNullException.ThrowIfNull(value);
 
-            return ValidationResult.Success;
+            return null;
         }
     }
 }

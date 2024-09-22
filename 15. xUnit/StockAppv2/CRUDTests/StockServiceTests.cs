@@ -17,7 +17,7 @@ namespace CRUDTests
         [InlineData("MSFT", "Microsoft Corp.", "2001-01-01", 100, 0, typeof(ArgumentException))] // Price is too low
         [InlineData("MSFT", "Microsoft Corp.", "2001-01-01", 100, 10001, typeof(ArgumentException))] // Price is too high
         [InlineData("MSFT", "Microsoft Corp.", "1999-12-31", 100, 100, typeof(ArgumentException))] // Date is too old
-        public async Task CreateBuyOrder_InvalidParameters_ThrowsException(
+        public void CreateBuyOrder_InvalidParameters_ThrowsException(
             string stockSymbol,
             string stockName,
             string date,
@@ -36,15 +36,15 @@ namespace CRUDTests
             };
 
             // Assert
-            await Assert.ThrowsAsync(expectedException, async () =>
+            Assert.Throws(expectedException, () =>
             {
                 // Act
-                await _stocksService.CreateBuyOrder(buyOrderRequest);
+                _stocksService.CreateBuyOrder(buyOrderRequest);
             });
         }
 
         [Fact]
-        public async Task CreateBuyOrder_ValidParameters()
+        public void CreateBuyOrder_ValidParameters()
         {
             // Arrange
             BuyOrderRequest? buy_order_request = new()
@@ -57,7 +57,7 @@ namespace CRUDTests
             };
 
             // Act
-            BuyOrderResponse buy_order_reponse_from_add = await _stocksService.CreateBuyOrder(buy_order_request);
+            BuyOrderResponse buy_order_reponse_from_add = _stocksService.CreateBuyOrder(buy_order_request);
 
             // Assert
             Assert.True(buy_order_reponse_from_add.BuyOrderId != Guid.Empty);

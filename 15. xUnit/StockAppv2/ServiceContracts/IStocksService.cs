@@ -14,7 +14,7 @@ namespace ServiceContracts
         /// </summary>
         /// <param name="request">BuyOrder to be created</param>
         /// <returns>A BuyOrderResponse object representing newly created BuyOrder</returns>
-        public Task<BuyOrderResponse> CreateBuyOrder(BuyOrderRequest? request);
+        public BuyOrderResponse CreateBuyOrder(BuyOrderRequest? request);
 
         /// <summary>
         /// Inserts a new sell order into the database

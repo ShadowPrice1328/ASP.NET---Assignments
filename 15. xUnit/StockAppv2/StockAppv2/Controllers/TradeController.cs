@@ -6,10 +6,11 @@ using StockAppv2.ViewModels;
 
 namespace StockAppv2.Controllers
 {
-    public class TradeController(IFinnhubService finnhubService, IOptions<TradingOptions> options) : Controller
+    public class TradeController(IFinnhubService finnhubService, IOptions<TradingOptions> options, IConfiguration configuration) : Controller
     {
         private readonly IFinnhubService _finnhubService = finnhubService;
         private readonly IOptions<TradingOptions> _options = options;
+        private readonly IConfiguration _configuration = configuration;
 
         [Route("/")]
         [Route("[action]")]
@@ -27,6 +28,8 @@ namespace StockAppv2.Controllers
                 StockSymbol = stockSymbol,
                 Price = stockPriceQuote.CurrentPrice,
             };
+
+            ViewBag.Token = _configuration["Token"];
 
             return View(viewModel);
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +16,22 @@ namespace ServiceContracts.DTO
         public uint Quantity { get; set; }
         public double Price { get; set; }
         public double TradeAmount { get; set; }
+    }
+
+    public static class SellOrderExtentions
+    {
+        public static SellOrderResponse ToSellOrderResponse(this SellOrder sellOrder)
+        {
+            return new SellOrderResponse()
+            {
+                SellOrderId = sellOrder.SellOrderId,
+                StockSymbol = sellOrder.StockSymbol,
+                StockName = sellOrder.StockName,
+                DateAndTimeOfOrder = sellOrder.DateAndTimeOfOrder,
+                Quantity = sellOrder.Quantity,
+                Price = sellOrder.Price,
+                TradeAmount = sellOrder.Price * sellOrder.Quantity
+            };
+        }
     }
 }
