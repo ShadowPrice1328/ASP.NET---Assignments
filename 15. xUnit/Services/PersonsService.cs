@@ -158,6 +158,38 @@ public partial class PersonsServices : IPersonsService
 
     PersonResponse IPersonsService.UpdatePerson(PersonUpdateRequest? personUpdateRequest)
     {
-        throw new NotImplementedException();
+        if (personUpdateRequest == null)
+            throw new ArgumentNullException(nameof(Person));
+
+        ValidationHelper.ModelValidation(personUpdateRequest);
+
+        Person? matchingPerson = _persons.FirstOrDefault(p => p.PersonId == personUpdateRequest.PersonId);
+
+        if (matchingPerson == null)
+            throw new ArgumentNullException(nameof(matchingPerson), "Person with given Id does not exist");
+
+        matchingPerson.PersonName = personUpdateRequest.PersonName;
+        matchingPerson.Address = personUpdateRequest.Address;
+        matchingPerson.Gender = personUpdateRequest.Gender.ToString();
+        matchingPerson.Email = personUpdateRequest.Email;
+        matchingPerson.DateOfBirth = personUpdateRequest.DateOfBirth;
+        matchingPerson.CountryId = personUpdateRequest.CountryId;
+        matchingPerson.ReceiveNewsLetters = personUpdateRequest.ReceiveNewsLetters;
+
+        return matchingPerson.ToPersonResponse();
+    }
+
+    public bool DeletePerson(Guid? guid)
+    {
+        if (!guid.HasValue)
+            throw new ArgumentNullException(nameof(guid));
+
+        var person = _persons.FirstOrDefault(p => p.PersonId == guid);
+
+        if (person == null)
+            return false;
+
+        _persons.RemoveAll(p => p.PersonId == guid);
+        return true;
     }
 }

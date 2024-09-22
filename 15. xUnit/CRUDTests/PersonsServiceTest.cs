@@ -5,6 +5,7 @@ using ServiceContracts.DTO;
 using ServiceContracts.Enums;
 using Services;
 using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace CRUDTests;
 
@@ -320,7 +321,128 @@ public class PersonsServiceTest
 
     #region UpdatePerson
 
-    //TO DO: Tests for null object, null name, proper name and email.
+    [Fact]
+    public void UpdatePerson_NullPerson()
+    {
+        // Arrange
+        PersonUpdateRequest person_update_request = null;
+
+        // Assert
+        Assert.Throws<ArgumentNullException>(() =>
+        {
+            // Act
+            _personsService.UpdatePerson(person_update_request);
+        });
+    }
+
+    [Fact]
+    public void UpdatePerson_PersonNameIsNull()
+    {
+        // Arrange
+        PersonAddRequest person_add_request = new PersonAddRequest()
+        {
+            PersonName = "Maria",
+            Email = "maria@example.com",
+            Gender = GenderOptions.Female
+        };
+
+        PersonResponse person_response_from_add = _personsService.AddPerson(person_add_request);
+
+        PersonUpdateRequest person_update_request = person_response_from_add.ToPersonUpdateRequest();
+        person_update_request.PersonName = null;
+
+        // Assert
+        Assert.Throws<ArgumentException>(() =>
+        {
+            // Act
+            _personsService.UpdatePerson(person_update_request);
+        });
+    }
+
+    [Fact]
+    public void UpdatePerson_ProperNameAndEmail()
+    {
+        // Arrange
+
+        PersonAddRequest person_add_request = new PersonAddRequest()
+        {
+            PersonName = "Maria",
+            Email = "maria@example.com",
+            Gender = GenderOptions.Female
+        };
+
+        PersonResponse person_response_from_add = _personsService.AddPerson(person_add_request);
+        PersonUpdateRequest person_update_request = person_response_from_add.ToPersonUpdateRequest();
+
+        person_update_request.PersonName = "Yelyzaveta";
+        person_update_request.Email = "yelyzaveta@example.com";
+
+        // Act
+        PersonResponse person_response_from_update = _personsService.UpdatePerson(person_update_request);
+        PersonResponse? person_reponse_from_get = _personsService.GetPersonByPersonId(person_response_from_update.PersonId);
+
+        // Assert
+        Assert.Equal(person_reponse_from_get, person_response_from_update);
+    }
+
+    #endregion
+
+    #region DeletePerson
+
+    [Fact]
+    public void DeletePerson_NullPersonId()
+    {
+        // Arrange
+        Guid? personId = null;
+
+        // Assert
+        Assert.Throws<ArgumentNullException>(() =>
+        {
+            // Act
+            _personsService.DeletePerson(personId);
+        });
+    }
+
+    [Fact]
+    public void DeletePerson_InvalidPersonId()
+    {
+        // Act
+        bool isDeleted = _personsService.DeletePerson(Guid.NewGuid());
+
+        // Assert
+        Assert.False(isDeleted);
+    }
+
+    [Fact]
+    public void DeletePerson_ValidPersonId()
+    {
+        // Assert
+        CountryAddRequest country_add_request = new CountryAddRequest()
+        {
+            CountryName = "USA"
+        };
+
+        CountryResponse country_response_from_add = _countriesService.AddCountry(country_add_request);
+
+        PersonAddRequest person_add_request = new PersonAddRequest()
+        {
+            PersonName = "Somebody Somewhere",
+            Email = "mail@example.com",
+            DateOfBirth = DateTime.Parse("2005-05-01"),
+            Gender = GenderOptions.Female,
+            Address = "Some street",
+            CountryId = country_response_from_add.CountryId,
+            ReceiveNewsLetters = false
+        };
+
+        PersonResponse person_response_from_add = _personsService.AddPerson(person_add_request);
+
+        // Act
+        bool isDeleted = _personsService.DeletePerson(person_response_from_add.PersonId);
+
+        // Assert
+        Assert.True(isDeleted);
+    }
 
     #endregion
 }
