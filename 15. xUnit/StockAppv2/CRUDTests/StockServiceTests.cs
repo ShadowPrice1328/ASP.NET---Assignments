@@ -1,12 +1,17 @@
 using ServiceContracts;
 using ServiceContracts.DTO;
 using Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
+using Xunit.Abstractions;
 
 namespace CRUDTests
 {
-    public class StockServiceTests()
+    public class StockServiceTests(ITestOutputHelper testOutputHelper)
     {
         private readonly IStocksService _stocksService = new StocksService();
+        private readonly ITestOutputHelper _outputHelper = testOutputHelper;
 
         #region CreateBuyOrder
 
@@ -120,5 +125,113 @@ namespace CRUDTests
         }
 
         #endregion
+
+        #region GetBuyOrders
+
+        [Fact]
+        public void GetBuyOrders_EmptyList()
+        {
+            // Act
+            List<BuyOrderResponse> buy_orders_responses_from_get = _stocksService.GetBuyOrders();
+
+            // Assert
+            Assert.Empty(buy_orders_responses_from_get);
+        }
+
+        [Fact]
+        public void GetBuyOrders_AddFewBuyOrders()
+        {
+            // Arrange
+            List<BuyOrderResponse> buy_order_responses_from_add = AddFewOrders<BuyOrderRequest, BuyOrderResponse>(_stocksService.CreateBuyOrder);
+
+            // Act
+            List<BuyOrderResponse> buy_order_responses_from_get = _stocksService.GetBuyOrders();
+
+            // Write expected values to Console
+            _outputHelper.WriteLine("Expected: ");
+            foreach (var buy_order_response in buy_order_responses_from_add)
+            {
+                _outputHelper.WriteLine(buy_order_response.ToString());
+            }
+
+            // Assert 
+            _outputHelper.WriteLine("Actual: ");
+            foreach (var buy_order_response in buy_order_responses_from_get)
+            {
+                // Write actual values to Console
+                _outputHelper.WriteLine(buy_order_response.ToString());
+
+                Assert.Contains(buy_order_response, buy_order_responses_from_get);
+            }
+        }
+
+        #endregion
+
+        #region GetSellOrders
+
+        [Fact]
+        public void GetSellOrders_EmptyList()
+        {
+            // Act
+            List<SellOrderResponse> sell_orders_responses_from_get = _stocksService.GetSellOrders();
+
+            // Assert
+            Assert.Empty(sell_orders_responses_from_get);
+        }
+
+        [Fact]
+        public void GetSellOrders_AddFewSellOrders()
+        {
+            // Arrange
+            List<SellOrderResponse> sell_order_responses_from_add = AddFewOrders<SellOrderRequest, SellOrderResponse>(_stocksService.CreateSellOrder);
+
+            // Act
+            List<SellOrderResponse> sell_order_responses_from_get = _stocksService.GetSellOrders();
+
+            // Write expected values to Console
+            _outputHelper.WriteLine("Expected: ");
+            foreach (var sell_order_response in sell_order_responses_from_add)
+            {
+                _outputHelper.WriteLine(sell_order_response.ToString());
+            }
+
+            // Assert 
+            _outputHelper.WriteLine("Actual: ");
+            foreach (var sell_order_response in sell_order_responses_from_get)
+            {
+                // Write actual values to Console
+                _outputHelper.WriteLine(sell_order_response.ToString());
+
+                Assert.Contains(sell_order_response, sell_order_responses_from_get);
+            }
+        }
+
+        #endregion
+
+        private List<TResponse> AddFewOrders<TRequest, TResponse>(Func<TRequest, TResponse> createOrderMethod)
+            where TRequest : class, new()
+        {
+            TRequest order_request_1 = new TRequest();
+            SetOrderProperties(order_request_1, "MSFT", "Microsoft Corp.", "2004-08-15", 500, 7000);
+
+            TRequest order_request_2 = new TRequest();
+            SetOrderProperties(order_request_2, "MSFT", "Microsoft Corp.", "2001-01-01", 700, 5000);
+
+            List<TResponse> orderResponses = new List<TResponse>
+            {
+                createOrderMethod(order_request_1),
+                createOrderMethod(order_request_2)
+            };
+
+            return orderResponses;
+        }
+        private void SetOrderProperties<TRequest>(TRequest request, string stockSymbol, string stockName, string date, uint quantity, double price)
+        {
+            request.GetType().GetProperty("StockSymbol")?.SetValue(request, stockSymbol);
+            request.GetType().GetProperty("StockName")?.SetValue(request, stockName);
+            request.GetType().GetProperty("DateAndTimeOfOrder")?.SetValue(request, DateTime.Parse(date));
+            request.GetType().GetProperty("Quantity")?.SetValue(request, quantity);
+            request.GetType().GetProperty("Price")?.SetValue(request, price);
+        }
     }
 }
