@@ -5,5 +5,6 @@
         public string? StockName { get; set; }
         public string? StockSymbol { get; set; }
         public decimal Price { get; set; }
+        public uint Quantity { get; set; }
     }
 }
