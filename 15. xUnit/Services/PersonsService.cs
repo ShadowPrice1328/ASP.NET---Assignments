@@ -15,9 +15,27 @@ public partial class PersonsServices : IPersonsService
     private readonly List<Person> _persons;
     private readonly ICountriesService _countryService;
 
-    public PersonsServices()
+    public PersonsServices(bool initialize = true)
     {
         _persons = new List<Person>();
+
+        if (initialize)
+        {
+            _persons.AddRange(new List<Person>()
+            {
+                new Person() {PersonId = Guid.Parse("575b2727-4458-4d44-90e0-307415d44cc2"), PersonName = "Ardyth", Email = "awoloschinski0@cnet.com", DateOfBirth = DateTime.Parse("1999-05-08"), Gender = "Female", CountryId = Guid.Parse("81D82D26-D5BF-40C3-81F5-C1FD4EDE7B2F"),Address = "5 Drewry Drive", ReceiveNewsLetters = false },
+                new Person() {PersonId = Guid.Parse("4f416b05-5255-4d92-86d6-a3d248de8d27"), PersonName = "Erinna", Email = "ezumbusch1@youtu.be", DateOfBirth = DateTime.Parse("2003-02-02"), Gender = "Female", CountryId = Guid.Parse("53423D62-AB97-49CD-95E2-62CEC28968D3"), Address = "088 Russell Terrace", ReceiveNewsLetters = true }, // Germany
+                new Person() {PersonId = Guid.Parse("07bfde2a-6c50-47bf-be82-e89999e7ab66"), PersonName = "Marys", Email = "mgrimsdike2@arstechnica.com", DateOfBirth = DateTime.Parse("1995-12-19"), Gender = "Female", CountryId = Guid.Parse("E52B029D-7AB4-4006-8A86-C552D4F7EE33"), Address = "587 Onsgard Lane", ReceiveNewsLetters = true }, // Ukraine
+                new Person() {PersonId = Guid.Parse("4c6bbc84-5457-4746-a24f-ce1c9c0d202e"), PersonName = "Ulrica", Email = "uledram3@china.com.cn", DateOfBirth = DateTime.Parse("2001-11-11"), Gender = "Female", CountryId = Guid.Parse("3C1B53C6-7DEF-4B0A-BCF5-7634DC0469B4"), Address = "39459 Troy Trail", ReceiveNewsLetters = true }, // Poland
+                new Person() {PersonId = Guid.Parse("011319f8-796a-40b8-90be-072fc5015ccc"), PersonName = "Keith", Email = "kyerrell4@simplemachines.org", DateOfBirth = DateTime.Parse("2005-01-26"), Gender = "Male", CountryId = Guid.Parse("81D82D26-D5BF-40C3-81F5-C1FD4EDE7B2F"), Address = "39 Washington Road", ReceiveNewsLetters = true }, // USA
+                new Person() {PersonId = Guid.Parse("193e9bf0-8dc4-441c-bb36-4fe87f2be954"), PersonName = "Rich", Email = "rrusson5@biglobe.ne.jp", DateOfBirth = DateTime.Parse("1995-05-02"), Gender = "Male", CountryId = Guid.Parse("53423D62-AB97-49CD-95E2-62CEC28968D3"), Address = "9 Packers Place", ReceiveNewsLetters = true }, // Germany
+                new Person() {PersonId = Guid.Parse("99b4d137-f2c6-4d64-b04c-47298cdf2e8d"), PersonName = "Caryl", Email = "cledford6@usatoday.com", DateOfBirth = DateTime.Parse("1997-03-18"), Gender = "Female", CountryId = Guid.Parse("E52B029D-7AB4-4006-8A86-C552D4F7EE33"), Address = "7 Old Gate Trail", ReceiveNewsLetters = true }, // Ukraine
+                new Person() {PersonId = Guid.Parse("efa20850-5aa2-4af0-bf6a-97e40e17ae0d"), PersonName = "Brooke", Email = "bstyle7@elpais.com", DateOfBirth = DateTime.Parse("2005-04-28"), Gender = "Male", CountryId = Guid.Parse("9B98BA57-466B-46D3-8F8D-ED9D7B982354"), Address = "3 Superior Court", ReceiveNewsLetters = false }, // Canada
+                new Person() {PersonId = Guid.Parse("94da91d7-dbc2-4b52-9d13-3852c13a776c"), PersonName = "Teodorico", Email = "twinley8@huffingtonpost.com", DateOfBirth = DateTime.Parse("2004-12-19"), Gender = "Male", CountryId = Guid.Parse("3C1B53C6-7DEF-4B0A-BCF5-7634DC0469B4"), Address = "8 Hintze Drive", ReceiveNewsLetters = false }, // Poland
+                new Person() {PersonId = Guid.Parse("b289e8aa-7d16-4060-953d-0e0eec68b113"), PersonName = "Elita", Email = "egreenrodd9@nps.gov", DateOfBirth = DateTime.Parse("1996-02-14"), Gender = "Female", CountryId = Guid.Parse("9B98BA57-466B-46D3-8F8D-ED9D7B982354"), Address = "92 Saint Paul Hill", ReceiveNewsLetters = false }, // Canada
+            });
+        }
+
         _countryService = new CountriesService();
     }
     private PersonResponse ConvertPersonToPersonResponse(Person person)
@@ -91,7 +109,7 @@ public partial class PersonsServices : IPersonsService
 
             case nameof(Person.Gender):
                 matchingPeople = allPeople.Where(p =>
-                string.IsNullOrEmpty(p.Gender) || p.Gender.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                string.IsNullOrEmpty(p.Gender) || p.Gender.Equals(searchString, StringComparison.OrdinalIgnoreCase))
                 .ToList();
                 break;
 

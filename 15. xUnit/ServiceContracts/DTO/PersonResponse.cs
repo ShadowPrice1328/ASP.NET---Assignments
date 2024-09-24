@@ -77,7 +77,7 @@ public static class PersonExtentions
             CountryId = person.CountryId,
             Address = person.Address,
             ReceiveNewsLetters = person.ReceiveNewsLetters,
-            Age = (person.DateOfBirth != null)? Math.Round(((DateTime.Now - person.DateOfBirth) / 365.25).Value.TotalDays, 2) : null 
+            Age = (person.DateOfBirth != null)? Math.Round((DateTime.Now - person.DateOfBirth.Value).TotalDays / 365.25) : null 
         };
     }
 }
