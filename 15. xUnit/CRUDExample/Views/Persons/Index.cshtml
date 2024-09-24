@@ -1,0 +1,33 @@
+﻿@model IEnumerable<PersonResponse>
+
+<div>
+    <table class="table w-75" style="margin-top:20px">
+        <thead>
+            <tr>
+                <th>Person Name</th>
+                <th>Email</th>
+                <th>DateOfBirth</th>
+                <th>Gender</th>
+                <th>Country</th>
+                <th>Address</th>
+                <th>ReceiveNewsLetters</th>
+                <th>Age</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var response in Model)
+            {
+                <tr>
+                    <td>@response.PersonName</td>
+                    <td>@response.Email</td>
+                    <td>@response.DateOfBirth?.ToString("dd MMM yyyy")</td>
+                    <td>@response.Gender</td>
+                    <td>@response.Country</td>
+                    <td>@response.Address</td>
+                    <td>@response.ReceiveNewsLetters.ToString()</td>
+                    <td>@response.Age.ToString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

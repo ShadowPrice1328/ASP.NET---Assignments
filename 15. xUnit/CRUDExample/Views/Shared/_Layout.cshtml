@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/css/StyleSheet.css"/>
+</head>
+<body>
+    <div class="navbar">
+        <ul>
+            <li class="navbar-brand">CRUD Demo</li>
+            <li><a href="/persons">Persons</a></li>
+        </ul>
+    </div>
+
+    <div class="page-content">
+        @RenderBody()
+    </div>
+</body>
+</html>
