@@ -1,5 +1,32 @@
 ﻿@model IEnumerable<PersonResponse>
 
+<form action="~/persons/index" method="get">
+    <div class="box flex-borderless">
+        <div class="flex-1">
+            <select name="searchBy">
+                @foreach (var field in ViewBag.personFields)
+                {
+                    if (ViewBag.currentSearchBy == field)
+                    {
+                        <option value="@field" selected="selected">@field</option>
+                    }
+                    else
+                    {
+                        <option value="@field">@field</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="flex-1">
+            <input type="search" name="searchString" id="Search" placeholder="Search..." autocomplete="off" value="@ViewBag.currentSearchString" />
+        </div>
+        <div class="flex-1">
+            <button>Search</button>
+            <a href="~/persons/index"><p>Clear all</p></a>
+        </div>
+    </div>
+</form>
+
 <div>
     <table class="table w-75" style="margin-top:20px">
         <thead>
