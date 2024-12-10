@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
 using ServiceContracts.DTO;
+using ServiceContracts.Enums;
 using Services;
 using System.Reflection;
 
@@ -13,7 +14,7 @@ namespace CRUDExample.Controllers
         [Route("/")]
         [Route("[controller]")]
         [Route("[controller]/index")]
-        public IActionResult Index(string searchBy, string? searchString)
+        public IActionResult Index(string searchBy, string? searchString, string sortBy = nameof(PersonResponse.PersonName), OrderOptions order = OrderOptions.ASC)
         {
             List<PropertyInfo> properties = typeof(PersonResponse).GetProperties().Skip(1).ToList();
 
@@ -21,18 +22,24 @@ namespace CRUDExample.Controllers
 
             for (int i = 0; i < properties.Count; i++)
             {
-                //personFields.Add(properties[i].Name, properties[i].GetValue(responses[i])?.ToString() ?? "null");
+                //personFields.Add(properties[i].Name, properties[i].GetValue(persons[i])?.ToString() ?? "null");
                 personFields.Add(properties[i].Name);
             }
 
-            ViewBag.personFields = personFields;
+            ViewBag.PersonFields = personFields;
 
-            ViewBag.currentSearchBy = searchBy;
-            ViewBag.currentSearchString = searchString;
+            ViewBag.CurrentSearchBy = searchBy;
+            ViewBag.CurrentSearchString = searchString;
 
-            List<PersonResponse> responses = _personsService.GetFilteredPersons(searchBy, searchString);
+            List<PersonResponse> persons = _personsService.GetFilteredPersons(searchBy, searchString);
 
-            return View(responses);
+            // Sorting
+            List<PersonResponse> sortedPersons = _personsService.GetSortedPersons(persons, sortBy, order);
+            
+            ViewBag.CurrentSortBy = sortBy;
+            ViewBag.CurrentOrderOption = order.ToString();
+
+            return View(sortedPersons);
         }
     }
 }

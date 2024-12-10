@@ -1,0 +1,14 @@
+﻿@model string
+
+@if (ViewBag.CurrentSortBy == Model && ViewBag.CurrentOrderOption == OrderOptions.ASC.ToString())
+{
+    <a href="~/persons/index?searchBy=@(ViewBag.CurrentSearchBy)&searchString=@(ViewBag.CurrentSearchString)&sortBy=@(Model)&order=@(OrderOptions.DESC)">
+        @Model
+    </a>
+}
+else
+{
+    <a href="~/persons/index?searchBy=@(ViewBag.CurrentSearchBy)&searchString=@(ViewBag.CurrentSearchString)&sortBy=@(Model)&order=@(OrderOptions.ASC)">
+        @Model
+    </a>
+}

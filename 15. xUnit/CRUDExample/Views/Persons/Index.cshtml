@@ -4,9 +4,9 @@
     <div class="box flex-borderless">
         <div class="flex-1">
             <select name="searchBy">
-                @foreach (var field in ViewBag.personFields)
+                @foreach (var field in ViewBag.PersonFields)
                 {
-                    if (ViewBag.currentSearchBy == field)
+                    if (ViewBag.CurrentSearchBy == field)
                     {
                         <option value="@field" selected="selected">@field</option>
                     }
@@ -18,7 +18,7 @@
             </select>
         </div>
         <div class="flex-1">
-            <input type="search" name="searchString" id="Search" placeholder="Search..." autocomplete="off" value="@ViewBag.currentSearchString" />
+            <input type="search" name="searchString" id="Search" placeholder="Search..." autocomplete="off" value="@ViewBag.CurrentSearchString" />
         </div>
         <div class="flex-1">
             <button>Search</button>
@@ -31,14 +31,12 @@
     <table class="table w-75" style="margin-top:20px">
         <thead>
             <tr>
-                <th>Person Name</th>
-                <th>Email</th>
-                <th>DateOfBirth</th>
-                <th>Gender</th>
-                <th>Country</th>
-                <th>Address</th>
-                <th>ReceiveNewsLetters</th>
-                <th>Age</th>
+                @foreach (var field in (IEnumerable<string>)ViewBag.PersonFields)
+                {
+                    <th>
+                        @await Html.PartialAsync("_ColumnHeader", field)
+                    </th>
+                }
             </tr>
         </thead>
         <tbody>
